@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FocusFlow — Pomodoro & Tasks</title>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#111827; --muted:#9aa4b2; --accent:#6ee7b7;
+      --glass: rgba(255,255,255,0.03);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    html,body{height:100%; margin:0; background:linear-gradient(180deg,#071024 0%, #0f1724 100%); color:#e6eef6;}
+    .app{max-width:900px; margin:48px auto; padding:24px; border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow: 0 10px 30px rgba(2,6,23,0.6);}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    h1{font-size:20px;margin:0}
+    .row{display:flex;gap:16px}
+    .card{background:var(--card);padding:16px;border-radius:10px;box-shadow: 0 6px 18px rgba(2,6,23,0.6);}
+    .tasks{flex:1; min-width:300px;}
+    .timer{width:320px; display:flex;flex-direction:column; align-items:center; justify-content:center;}
+    input[type="text"]{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:var(--glass);color:inherit}
+    button{background:linear-gradient(90deg,var(--accent),#34d399);border:none;padding:8px 12px;border-radius:8px;color:#032;cursor:pointer;font-weight:600}
+    ul{list-style:none;padding:0;margin:12px 0 0 0;max-height:260px;overflow:auto}
+    li{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;margin-bottom:8px;background:rgba(0,0,0,0.15)}
+    .meta{font-size:12px;color:var(--muted)}
+    .controls{display:flex;gap:8px;margin-top:12px}
+    .big-time{font-size:48px;font-weight:700;margin:12px 0}
+    .small{font-size:13px;color:var(--muted)}
+    .pill{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:600}
+    footer{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>FocusFlow</h1>
+      <div class="small meta">Simple Pomodoro + Tasks</div>
+    </header>
+
+    <div class="row">
+      <!-- Tasks column -->
+      <section class="card tasks">
+        <div style="display:flex;gap:10px;align-items:center">
+          <input id="task-input" type="text" placeholder="Add a task and press Enter" />
+          <button id="add-btn">Add</button>
+        </div>
+        <ul id="task-list" aria-live="polite"></ul>
+        <div class="controls">
+          <button id="clear-completed">Clear Completed</button>
+          <div class="pill" id="task-count">0 tasks</div>
+        </div>
+      </section>
+
+      <!-- Timer column -->
+      <aside class="card timer">
+        <div class="small">Timer</div>
+        <div class="big-time" id="timer-display">25:00</div>
+        <div class="controls">
+          <button id="start-btn">Start</button>
+          <button id="pause-btn">Pause</button>
+          <button id="reset-btn">Reset</button>
+        </div>
+        <div style="margin-top:12px" class="small">Session: <span id="session-label">Work</span></div>
+      </aside>
+    </div>
+
+    <footer>Made with ❤️ — Open-source • No frameworks</footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
