@@ -6,47 +6,57 @@
   <title>FocusFlow — Pomodoro & Tasks</title>
   <style>
     :root{
-      --bg:#0f1724; --card:#111827; --muted:#9aa4b2; --accent:#6ee7b7;
-      --glass: rgba(255,255,255,0.03);
+      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#6ee7b7;
+      --accent-2:#60a5fa; --glass: rgba(255,255,255,0.03);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
-    html,body{height:100%; margin:0; background:linear-gradient(180deg,#071024 0%, #0f1724 100%); color:#e6eef6;}
-    .app{max-width:900px; margin:48px auto; padding:24px; border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow: 0 10px 30px rgba(2,6,23,0.6);}
+    html,body{height:100%; margin:0; background:linear-gradient(180deg,#061322 0%, #0f1724 100%); color:#e6eef6;}
+    .app{max-width:940px; margin:48px auto; padding:20px; border-radius:14px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow: 0 10px 30px rgba(2,6,23,0.6);}
     header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-    h1{font-size:20px;margin:0}
-    .row{display:flex;gap:16px}
-    .card{background:var(--card);padding:16px;border-radius:10px;box-shadow: 0 6px 18px rgba(2,6,23,0.6);}
-    .tasks{flex:1; min-width:300px;}
-    .timer{width:320px; display:flex;flex-direction:column; align-items:center; justify-content:center;}
-    input[type="text"]{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:var(--glass);color:inherit}
-    button{background:linear-gradient(90deg,var(--accent),#34d399);border:none;padding:8px 12px;border-radius:8px;color:#032;cursor:pointer;font-weight:600}
-    ul{list-style:none;padding:0;margin:12px 0 0 0;max-height:260px;overflow:auto}
-    li{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;margin-bottom:8px;background:rgba(0,0,0,0.15)}
+    h1{font-size:22px;margin:0}
+    .row{display:flex;gap:18px}
+    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow: 0 6px 18px rgba(2,6,23,0.6);}
+    .tasks{flex:1; min-width:320px;}
+    .timer{width:360px; display:flex;flex-direction:column; align-items:center; justify-content:center;}
+    input[type="text"]{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:var(--glass);color:inherit;outline:none}
+    button{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;padding:8px 12px;border-radius:10px;color:#022;cursor:pointer;font-weight:700;transition:transform .12s ease}
+    button:active{transform:translateY(1px)}
+    ul{list-style:none;padding:0;margin:12px 0 0 0;max-height:300px;overflow:auto}
+    li{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:10px;margin-bottom:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));cursor:pointer}
+    li:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(2,6,23,0.6)}
     .meta{font-size:12px;color:var(--muted)}
     .controls{display:flex;gap:8px;margin-top:12px}
-    .big-time{font-size:48px;font-weight:700;margin:12px 0}
+    .big-time{font-size:52px;font-weight:700;margin:12px 0}
     .small{font-size:13px;color:var(--muted)}
     .pill{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:600}
     footer{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
     .task-title{flex:1;padding-right:10px}
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted);padding:6px 8px;border-radius:8px}
+    .active { outline: 2px solid rgba(110,231,183,0.12); box-shadow: 0 6px 20px rgba(110,231,183,0.04); }
+    .progress{height:8px;width:100%;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;margin-top:8px}
+    .progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 0.4s ease}
+    .task-meta{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center}
+    .task-actions button{margin-left:8px}
   </style>
 </head>
 <body>
   <div class="app">
     <header>
       <h1>FocusFlow</h1>
-      <div class="small meta">Simple Pomodoro + Tasks</div>
+      <div class="small meta">Pomodoro • Tasks • Local Storage</div>
     </header>
 
     <div class="row">
       <!-- Tasks column -->
-      <section class="card tasks">
+      <section class="card tasks" aria-label="Tasks">
         <div style="display:flex;gap:10px;align-items:center">
-          <input id="task-input" type="text" placeholder="Add a task and press Enter" />
+          <input id="task-input" type="text" placeholder="Add a task and press Enter" aria-label="New task" />
           <button id="add-btn">Add</button>
         </div>
         <ul id="task-list" aria-live="polite"></ul>
+        <div class="progress" title="Session progress">
+          <i id="progress-bar"></i>
+        </div>
         <div class="controls">
           <button id="clear-completed" class="btn-ghost">Clear Completed</button>
           <div class="pill" id="task-count">0 tasks</div>
@@ -54,19 +64,23 @@
       </section>
 
       <!-- Timer column -->
-      <aside class="card timer">
+      <aside class="card timer" aria-label="Timer">
         <div class="small">Timer</div>
         <div class="big-time" id="timer-display">25:00</div>
-        <div class="controls">
+        <div class="small" id="active-task">No active task</div>
+        <div class="controls" style="margin-top:12px">
           <button id="start-btn">Start</button>
           <button id="pause-btn">Pause</button>
           <button id="reset-btn">Reset</button>
         </div>
         <div style="margin-top:12px" class="small">Session: <span id="session-label">Work</span></div>
+        <div style="margin-top:10px" class="settings">
+          <button id="durations-btn" class="btn-ghost">Set Durations</button>
+        </div>
       </aside>
     </div>
 
-    <footer>Made with ❤️ — Open-source • No frameworks</footer>
+    <footer>Made with ❤️ — Open-source • No frameworks • Final</footer>
   </div>
 
   <script src="script.js"></script>
